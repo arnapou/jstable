@@ -9,10 +9,16 @@
 
 (function() {
 
+	/*
+	 * Miscellaneous functions
+	 */
 	var isArray = function(v) {
 		return Object.prototype.toString.call(v) === '[object Array]';
 	};
 
+	/*
+	 * jsTable class
+	 */
 	var jsTable = function(data, uniqueIndex) {
 		this.data = [];
 		this.uniqueIndex = null;
@@ -65,7 +71,68 @@
 		this.rebuildUniqueIndex();
 	};
 
+	/*
+	 * jsConditionBuilder class
+	 */
+	var jsConditionBuilder = function(mode) {
+		this.condition = (mode === 'or') ? new jsConditionOr() : new jsConditionAnd();
+	};
+
+	/*
+	 * jsConditionOr class
+	 */
+	var jsConditionOr = function() {
+		this.conditions = [];
+	};
+
+	jsConditionOr.prototype.add = function(condition) {
+		this.conditions.push(condition);
+	};
+
+	jsConditionOr.prototype.match = function(key, value) {
+		var n = this.conditions.length, i;
+		for (i = 0; i < n; i++) {
+			if (this.conditions[i].match(key, value)) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	/*
+	 * jsConditionAnd class
+	 */
+	var jsConditionAnd = function() {
+		this.conditions = [];
+	};
+
+	jsConditionAnd.prototype.add = function(condition) {
+		this.conditions.push(condition);
+	};
+
+	jsConditionAnd.prototype.match = function(key, value) {
+		var n = this.conditions.length, i;
+		for (i = 0; i < n; i++) {
+			if (!this.conditions[i].match(key, value)) {
+				return false;
+			}
+		}
+		return true;
+	};
+
+	/*
+	 * Expose objects to global scope
+	 */
 	this.jsTable = jsTable;
+
+	this.jsCondition = {
+		and: function() {
+			return new jsConditionBuilder('and');
+		},
+		or: function() {
+			return new jsConditionBuilder('or');
+		}
+	};
 
 }).call(this);
 
