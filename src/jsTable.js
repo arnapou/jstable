@@ -71,6 +71,14 @@
 		this.rebuildUniqueIndex();
 	};
 
+	jsTable.conditionAnd = function() {
+		return new jsConditionBuilder('and');
+	};
+
+	jsTable.conditionOr = function() {
+		return new jsConditionBuilder('or');
+	};
+
 	/*
 	 * jsConditionBuilder class
 	 */
@@ -125,14 +133,5 @@
 	 */
 	this.jsTable = jsTable;
 
-	this.jsCondition = {
-		and: function() {
-			return new jsConditionBuilder('and');
-		},
-		or: function() {
-			return new jsConditionBuilder('or');
-		}
-	};
 
 }).call(this);
-
