@@ -10,13 +10,6 @@
 (function() {
 
 	/**
-	 * 
-	 */
-	var isArray = function(param) {
-		return Object.prototype.toString.call(param) === '[object Array]';
-	};
-
-	/**
 	 * jsTableMethods
 	 */
 	var jsTableMethods = {
@@ -28,6 +21,7 @@
 			for (i = 0; i < n; i++) {
 				callback.call(this, this[i]);
 			}
+			return this;
 		},
 		find: function(condition) {
 			var i, n = this.length;
@@ -130,7 +124,7 @@
 	 * jsTable class
 	 */
 	var jsTable = function(data, uniqueIndex) {
-		if (!isArray(data)) {
+		if (!jsTable.isArray(data)) {
 			throw 'data is not a valid object of type Array.';
 		}
 		var method;
@@ -156,6 +150,10 @@
 
 	jsTable.or = function() {
 		return new jsConditionBuilder('or');
+	};
+	
+	jsTable.isArray = function(param) {
+		return Object.prototype.toString.call(param) === '[object Array]';
 	};
 
 	/*
@@ -204,7 +202,7 @@
 			return this;
 		};
 		this.inArray = function(column, array) {
-			if (!isArray(array)) {
+			if (!jsTable.isArray(array)) {
 				throw 'the argument is not a valid object of type Array.';
 			}
 			var condition = new jsCondition(column, array, true, 'inArray');
@@ -212,7 +210,7 @@
 			return this;
 		};
 		this.notInArray = function(column, array) {
-			if (!isArray(array)) {
+			if (!jsTable.isArray(array)) {
 				throw 'the argument is not a valid object of type Array.';
 			}
 			var condition = new jsCondition(column, array, true, 'inArray');
@@ -314,7 +312,9 @@
 	 * jsCondition class
 	 */
 	var jsCondition = function(column, value, caseSensitive, operator) {
-		this.value = caseSensitive ? value : String(value).toLowerCase();
+		var self = this;
+		var typeofValue = typeof(value);
+		this.value = value;
 		if (typeof(column) === 'string') {
 			if (caseSensitive) {
 				this.match = function(element) {
@@ -325,11 +325,19 @@
 				};
 			}
 			else {
+				if (typeofValue === 'string') {
+					self.value = String(value).toLowerCase();
+				}
 				this.match = function(element) {
 					if (typeof(element[column]) === 'undefined') {
 						return false;
 					}
-					return jsConditionMatchMethods[operator].call(this, String(element[column]).toLowerCase());
+					if (typeof(element[column]) === 'string') {
+						return jsConditionMatchMethods[operator].call(this, String(element[column]).toLowerCase());
+					}
+					else {
+						return jsConditionMatchMethods[operator].call(this, element[column]);
+					}
 				};
 			}
 		}
