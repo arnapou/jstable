@@ -12,3 +12,27 @@
 .container {
 	margin-top: 1em;
 }
+.col_id {
+	width: 30%;
+}
+.col_name {
+	width: 40%;
+}
+.col_age {
+	width: 30%;
+}
+pre .comment {
+	color: #888;
+}
+pre .keyword {
+	color: #008;
+}
+pre .jsTable {
+	color: #880;
+}
+pre .method {
+	color: #800;
+}
+pre .string {
+	color: #088;
+}
