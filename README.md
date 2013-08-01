@@ -9,22 +9,22 @@ Example
 Data list :
 
     var data = [
-        {id: 211, name: 'john', age: 20},
-        {id: 452, name: 'carol', age: 25},
-        {id: 433, name: 'alain', age: 22},
-        {id: 511, name: 'georges', age: 22},
-        {id: 364, name: 'lea', age: 18},
-        {id: 144, name: 'sue', age: 8}
+        {id: 211, name: 'john'   , age: 20, genre: 'M'},
+        {id: 452, name: 'carol'  , age: 25, genre: 'F'},
+        {id: 433, name: 'alain'  , age: 22, genre: 'M'},
+        {id: 511, name: 'georges', age: 22, genre: 'M'},
+        {id: 364, name: 'lea'    , age: 18, genre: 'F'},
+        {id: 144, name: 'sue'    , age: 8 , genre: 'F'}
     ];
     
-    id     name        age
-    ----   ---------   ----
-    211    john        20
-    452    carol       25
-    433    alain       22
-    511    georges     22
-    364    lea         18
-    144    sue         8
+    id     name        age    genre
+    ----   ---------   ----   ------
+    211    john        20     M
+    452    carol       25     F
+    433    alain       22     M
+    511    georges     22     M
+    364    lea         18     F
+    144    sue         8      F
 
 Age > 20, sort by age asc and name desc, limit (0,2)
 
@@ -34,10 +34,10 @@ Age > 20, sort by age asc and name desc, limit (0,2)
         .sort({age: 1, name: -1})
         .limit(0, 2);
     
-    id     name        age
-    ----   ---------   ----
-    511    georges     22
-    433    alain       22
+    id     name        age    genre
+    ----   ---------   ----   ------
+    511    georges     22     M
+    433    alain       22     M
 
 (name ~ *l* or name ~ *o*) and age > 20
 
@@ -53,11 +53,11 @@ Age > 20, sort by age asc and name desc, limit (0,2)
             .greaterThan('age', 20)
         );
     
-    id     name        age
-    ----   ---------   ----
-    452    carol       25
-    433    alain       22
-    511    georges     22
+    id     name        age    genre
+    ----   ---------   ----   ------
+    452    carol       25     F
+    433    alain       22     M
+    511    georges     22     M
 
 Grouping (average age by genre for age >= 20)
 
