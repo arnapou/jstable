@@ -146,6 +146,50 @@ Find an object (or null if not found) based on the condition
     // @return object|null
     table.findOne(condition);
 
+Selecting
+---------
+
+Iterate over the array to create a new jsTable with new columns/rows.
+The columnName argument is the uniqueIndex of the new jsTable
+
+    // @return jsTable
+    table.select(function(row) {
+        // return a new formatted row
+    }, [columnName]);
+
+Grouping
+--------
+
+It return a new jsTable reduced by group functions.
+
+    // @return jsTable
+    table.select(key, initial, reduce, [finalize]);
+
+Argument _key_ (used for grouping)
+
+    key = {field1: 1, field2: 1};
+    key = function(row) {
+    	/* code should return a string which represent the grouping key */
+    };
+
+Argument _initial_ (used for initializing grouped rows)
+
+    initial = { someField1: someValue1, someField2: someValue2 };
+
+Argument _reduce_ (function which calculte each grouped row)
+
+    reduce = function(row) {
+        /* this is the current grouped row */
+        this.someField += row.someOtherField;
+    };
+
+Argument _finalize_ (function which finalize each grouped row)
+
+    finalize = function() {
+        /* this is the current grouped row */
+        this.someTotal = this.someField1 + this.someField2;
+    };
+
 Sorting / limit
 ---------------
 

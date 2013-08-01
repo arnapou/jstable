@@ -48,4 +48,48 @@ var examples = [{
 					.sort({age: 1, name: -1})
 					.limit(0, 2);
 		}
+	}, {
+		title: 'Select',
+		code: function() {
+			var table = new jsTable(data);
+			return table
+					.select(function(row) {
+				return {
+					id: row.id,
+					text: row.name + ' (' + row.age + ')'
+				};
+			});
+		}
+	}, {
+		title: 'Grouping (list of names by age and sorted by age)',
+		code: function() {
+			var table = new jsTable(data);
+			return table
+					.group(
+						{age: 1}, 
+						{names: ''}, 
+						function(row) {
+							this.names += (this.names ? ', ' : '') + row.name;
+						})
+					.sort({age: 1});
+		}
+	}, {
+		title: 'Grouping (average age by genre for age >= 20)',
+		code: function() {
+			var table = new jsTable(data);
+			return table
+					.find(jsTable.and().greaterThanOrEqual('age', 20))
+					.group(
+						function(row){
+							return row.genre === 'F' ? 'female' : 'male';
+						}, 
+						{sum: 0, count: 0}, 
+						function(row) {
+							this.sum += row.age;
+							this.count++;
+						}, 
+						function(){
+							this.average = this.sum / this.count;
+						});
+		}
 	}];

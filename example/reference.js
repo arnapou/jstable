@@ -82,6 +82,46 @@ var examples = [{
 		},
 		html: ''
 	}, {
+		title: 'Selecting',
+		code: function() {
+			// iterate over the array to create a new jsTable with new columns/rows
+			// the columnName argument is the uniqueIndex of the new jsTable
+			// @return jsTable
+			table.select(function(row) {
+				// return a new formatted row
+			}, [columnName]);
+		},
+		html: ''
+	}, {
+		title: 'Grouping',
+		code: function() {
+			// it return a new jsTable reduced by group functions
+			// @return jsTable
+			table.select(key, initial, reduce, [finalize]);
+			
+			// argument key (used for grouping)
+			key = {field1: 1, field2: 1};
+			key = function(row) {
+				/* code should return a string which represent the grouping key */
+			};
+			
+			// argument initial (used for initializing grouped rows)
+			initial = { someField1: someValue1, someField2: someValue2 };
+			
+			// argument reduce (function which calculte each grouped row)
+			reduce = function(row) {
+				/* this is the current grouped row */
+				this.someField += row.someOtherField;
+			};
+			
+			// argument finalize (function which finalize each grouped row)
+			finalize = function() {
+				/* this is the current grouped row */
+				this.someTotal = this.someField1 + this.someField2;
+			};
+		},
+		html: ''
+	}, {
 		title: 'Sorting / limit',
 		code: function() {
 			// sort rows (1: ascending, -1: descending)

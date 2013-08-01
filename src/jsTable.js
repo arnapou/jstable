@@ -23,6 +23,76 @@
 			}
 			return this;
 		},
+		select: function(callback, columnName) {
+			if (typeof(callback) !== 'function') {
+				throw 'this is not a valid callback for each method.';
+			}
+			var table = new jsTable([], columnName || this.uniqueIndex);
+			var i, n = this.length;
+			for (i = 0; i < n; i++) {
+				table.push(callback.call(this, this[i]));
+			}
+			return table;
+		},
+		group: function(key, initial, reduce, finalize) {
+			if (typeof(initial) !== 'object') {
+				throw 'initial argument is not a valid object.';
+			}
+			if (typeof(reduce) !== 'function') {
+				throw 'reduce argument is not a valid function.';
+			}
+			var simpleClone = function(obj) {
+				var newObj = {};
+				for (var k in obj) {
+					newObj[k] = obj[k];
+				}
+				return newObj;
+			};
+			var table = this;
+			var isKeyAFunction = (typeof(key) === 'function');
+			table = table.select(function(row) {
+				row['_key_'] = (isKeyAFunction ? key : function(row) {
+					var s = '';
+					for (var k in key) {
+						s += String(row[k]) + '::';
+					}
+					return s;
+				})(row);
+				return row;
+			}).sort({_key_: 1});
+
+			var newTable = new jsTable([]);
+			var newTableRow;
+			var previousKey;
+			table.each(function(row) {
+				if (previousKey !== row['_key_']) {
+					if (previousKey) {
+						if (typeof(finalize) === 'function') {
+							finalize.call(newTableRow);
+						}
+						newTable.push(newTableRow);
+					}
+					newTableRow = simpleClone(initial);
+					previousKey = row['_key_'];
+					if (isKeyAFunction) {
+						newTableRow['_key_'] = row['_key_'];
+					}
+					else {
+						for (var k in key) {
+							newTableRow[k] = row[k];
+						}
+					}
+				}
+				reduce.call(newTableRow, row);
+			});
+			if (previousKey) {
+				if (typeof(finalize) === 'function') {
+					finalize.call(newTableRow);
+				}
+				newTable.push(newTableRow);
+			}
+			return newTable;
+		},
 		find: function(condition) {
 			var i, n = this.length;
 			var elements, property;
@@ -151,7 +221,7 @@
 	jsTable.or = function() {
 		return new jsConditionBuilder('or');
 	};
-	
+
 	jsTable.isArray = function(param) {
 		return Object.prototype.toString.call(param) === '[object Array]';
 	};
