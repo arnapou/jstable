@@ -59,6 +59,29 @@ Age > 20, sort by age asc and name desc, limit (0,2)
     433    alain       22
     511    georges     22
 
+Grouping (average age by genre for age >= 20)
+
+    var table = new jsTable(data);
+    return table
+            .find(jsTable.and().greaterThanOrEqual('age', 20))
+            .group(
+                function(row){
+                    return row.genre === 'F' ? 'female' : 'male';
+                }, 
+                {sum: 0, count: 0}, 
+                function(row) {
+                    this.sum += row.age;
+                    this.count++;
+                }, 
+                function(){
+                    this.average = this.sum / this.count;
+                });
+    
+    sum    count    _key_    average
+    ----   ------   ------   --------
+    25     1        female   25
+    64     3        male     21.333333333333332
+
 Reference
 =========
 
