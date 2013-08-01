@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-(function() {
+(function(undefined) {
 
 	/**
 	 * jsTableMethods
@@ -48,50 +48,44 @@
 				}
 				return newObj;
 			};
-			var table = this;
 			var isKeyAFunction = (typeof(key) === 'function');
-			table = table.select(function(row) {
-				row['_key_'] = (isKeyAFunction ? key : function(row) {
+			
+			var groupedRows = {};
+			this.each(function(row) {
+				var k = (isKeyAFunction ? key : function(row) {
 					var s = '';
 					for (var k in key) {
 						s += String(row[k]) + '::';
 					}
 					return s;
 				})(row);
-				return row;
-			}).sort({_key_: 1});
-
-			var newTable = new jsTable([]);
-			var newTableRow;
-			var previousKey;
-			table.each(function(row) {
-				if (previousKey !== row['_key_']) {
-					if (previousKey) {
-						if (typeof(finalize) === 'function') {
-							finalize.call(newTableRow);
-						}
-						newTable.push(newTableRow);
-					}
-					newTableRow = simpleClone(initial);
-					previousKey = row['_key_'];
-					if (isKeyAFunction) {
-						newTableRow['_key_'] = row['_key_'];
-					}
-					else {
-						for (var k in key) {
-							newTableRow[k] = row[k];
-						}
-					}
+				if (typeof(groupedRows[k]) === 'undefined') {
+					groupedRows[k] = [];
 				}
-				reduce.call(newTableRow, row);
+				groupedRows[k].push(row);
 			});
-			if (previousKey) {
-				if (typeof(finalize) === 'function') {
-					finalize.call(newTableRow);
+
+			var table = new jsTable([], isKeyAFunction ? '__key__' : undefined), i, n, row;
+			for (var k in groupedRows) {
+				n = groupedRows[k].length;
+				row = simpleClone(initial);
+				if(isKeyAFunction) {
+					row['__key__'] = k;
 				}
-				newTable.push(newTableRow);
+				else {
+					for(i in key) {
+						row[i] = groupedRows[k][0][i];
+					}
+				}
+				for (i = 0; i < n; i++) {
+					reduce.call(row, groupedRows[k][i]);
+				}
+				if (typeof(finalize) === 'function') {
+					finalize.call(row);
+				}
+				table.push(row);
 			}
-			return newTable;
+			return table;
 		},
 		find: function(condition) {
 			var i, n = this.length;
