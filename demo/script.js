@@ -19,7 +19,7 @@ function fnToString(fn) {
 	s = s.replace(/(\/\*.*?\*\/)/g, '<span class="comment">$1</span>');
 	s = s.replace(/(new |\n\s*return |(^|\n)var )/g, '<span class="keyword">$1</span>');
 	s = s.replace(/(function)(\()/g, '<span class="keyword">$1</span>$2');
-	s = s.replace(/(jsTable)([\(\.])/g, '<span class="jsTable">$1</span>$2');
+	s = s.replace(/(jsTable|jsTableRenderer)([\(\.])/g, '<span class="jsTable">$1</span>$2');
 	s = s.replace(/(\.)([a-z0-9A-Z]+)(\()/g, '$1<span class="method">$2</span>$3');
 	return s;
 }
@@ -62,3 +62,7 @@ function show(examples, title) {
 		$('#examples').append(html);
 	}
 }
+
+$(function() {
+	show(examples, currentPage);
+});

@@ -216,6 +216,18 @@
 		return new jsConditionBuilder('or');
 	};
 
+	jsTable.isInstance = function(obj) {
+		if(!jsTable.isArray(obj)) {
+			return false;
+		}
+		for (var method in jsTableMethods) {
+			if (!obj[method]) {
+				return false;
+			}
+		}
+		return true;
+	};
+
 	jsTable.isArray = function(param) {
 		return Object.prototype.toString.call(param) === '[object Array]';
 	};
@@ -423,3 +435,22 @@
 	this.jsTable = jsTable;
 
 }).call(this);
+
+(function($, undefined) {
+	
+	$.fn.jsTable = function(table, settings) {
+		if (!(jsTable.isArray(table))) {
+			throw 'table is not a valid array object.';
+		}
+		console.log(arguments);
+//		return this.each(function (){
+//			var _settings = $.extend({
+//				pageNum: 1,
+//				pageSize: 25
+//			}, settings);
+//			
+//			
+//		});
+	};
+
+}).call(this, jQuery);

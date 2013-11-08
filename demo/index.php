@@ -11,6 +11,7 @@
 $pages = array(
 	'miscellaneous' => 'Miscellaneous',
 	'querying' => 'Querying',
+	'jquery-plugin' => 'jQuery plugin',
 	'reference' => 'Reference',
 );
 
@@ -32,8 +33,8 @@ if ( !isset($current) ) {
 		<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 		<script src="script.js"></script>
-		<script src="<?= $current ?>.js"></script>
 		<script src="../src/jsTable.js"></script>
+		<script src="<?= $current ?>.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -52,9 +53,7 @@ if ( !isset($current) ) {
 
 		</div>
 		<script type="text/javascript">
-			$(function() {
-				show(examples, <?= json_encode($pages[$current]) ?>);
-			});
+			var currentPage = <?= json_encode($pages[$current]) ?>;
 		</script>
 	</body>
 </html>
