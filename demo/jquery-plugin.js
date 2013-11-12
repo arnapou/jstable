@@ -1,13 +1,15 @@
 var examples = [{
 		title: 'Simple',
 		code: function() {
-			$('#example1').jsTable(data);
+			console.log($('#example1').jsTable({
+				data: data
+			}));
 		},
 		html: '<div id="example1"></div>'
 	}, {
 		title: 'zzz',
 		code: function() {
-			TODO
+			//TODO
 		},
 		html: 'yyy'
 	}];

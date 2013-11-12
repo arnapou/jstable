@@ -34,6 +34,7 @@ if ( !isset($current) ) {
 		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 		<script src="script.js"></script>
 		<script src="../src/jsTable.js"></script>
+		<script src="../src/jsTable-jqPlugin.js"></script>
 		<script src="<?= $current ?>.js"></script>
 	</head>
 	<body>
