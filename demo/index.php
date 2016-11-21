@@ -27,10 +27,10 @@ if (!isset($current)) {
 <html>
     <head>
         <title>jsTable</title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="style.css">
         <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="script.js"></script>
         <script src="../src/jsTable.js"></script>
         <script src="../src/jsTable-jqPlugin.js"></script>
@@ -38,16 +38,21 @@ if (!isset($current)) {
     </head>
     <body>
         <div class="container">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <a class="brand" href="#">jsTable</a>
-                    <ul class="nav">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">jsTable</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
                         <?php foreach ($pages as $page => $title): ?>
                             <li<?= ($current == $page ? ' class="active"' : '') ?>><a href="?page=<?= $page ?>"><?= $title ?></a></li>
                         <?php endforeach; ?>
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </nav>
 
             <div id="examples"></div>
 

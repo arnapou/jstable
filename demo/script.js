@@ -32,9 +32,9 @@ function show(examples, title) {
 	}
 	for (i = 0; i < n; i++) {
 		html = '<h4>' + examples[i].title + '</h4>';
-		html += '<div class="row"><div class="span8">';
+		html += '<div class="row"><div class="col-lg-8">';
 		html += '<pre>' + fnToString(examples[i].code) + '</pre>';
-		html += '</div><div class="span4">';
+		html += '</div><div class="col-lg-4">';
 		if (typeof(examples[i].html) === 'undefined') {
 			result = examples[i].code();
 			if (!jsTable.isArray(result)) {
