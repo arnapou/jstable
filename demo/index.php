@@ -50,6 +50,11 @@ if (!isset($current)) {
                             <li<?= ($current == $page ? ' class="active"' : '') ?>><a href="?page=<?= $page ?>"><?= $title ?></a></li>
                         <?php endforeach; ?>
                         </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="https://github.com/arnapou/jstable"><i class="github-icon"></i> Github</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
