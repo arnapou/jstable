@@ -3,7 +3,6 @@ jsTable
 
 jsTable object is a pure javascript Array in which we inject methods in order to allow filtering/sorting/limiting.
 
-Live demo : [jstable.arnapou.net](http://jstable.arnapou.net/)
 
 Example
 =======
